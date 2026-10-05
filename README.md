@@ -1,4 +1,5 @@
 # Flujo_de_Datos_de_SQL_a_Python_tania_lena_eddy_franco
+<img width="1280" height="640" alt="image" src="https://github.com/user-attachments/assets/08630d49-0f5e-42a5-8d01-eac9891b703d" />
 
 ## Integrantes
 - Tania
