@@ -1,5 +1,6 @@
 # Flujo_de_Datos_de_SQL_a_Python_tania_lena_eddy_franco
 <img width="1280" height="640" alt="Hallazgos principales Olist" src="img/image.png" />
+
 ## Integrantes
 - Tania
 - Lena
