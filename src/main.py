@@ -29,14 +29,14 @@ DATA = RAIZ / "data"
 # ---------------------------------------------------------------------------
 
 # ¿Cuál de las tres consultas lleváis hasta el CSV?
-CONSULTA = "df1_actividad_clientes.sql"
+CONSULTA = "df3_vendedores_populares.sql"
 
 # El grano, en lenguaje de negocio. Ejemplo: "un pedido entregado"
-GRANO = ""
+GRANO = "Nivel de Vendedor"
 
 # La columna que identifica una fila según ese grano. Ejemplo: "order_id"
 # Sirve para comprobar que el JOIN no está multiplicando filas.
-CLAVE_DE_GRANO = ""
+CLAVE_DE_GRANO = "seller_id"
 
 
 # ---------------------------------------------------------------------------
