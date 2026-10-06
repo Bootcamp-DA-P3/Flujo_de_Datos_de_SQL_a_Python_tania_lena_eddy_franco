@@ -42,31 +42,73 @@ CLAVE_DE_GRANO = "seller_id, product_id"
 # ---------------------------------------------------------------------------
 
 
-def crear_engine():
+def conection_bd():
     """Crea el motor de conexión a MySQL con las credenciales del .env."""
+    # 1. Construir la URL de conexión completa
     url = f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
-    return create_engine(url)
+    # 2. Crear el objeto 'motor' (engine) usando la URL
+    engine = create_engine(url)
+    return engine.connect()
 
+def test_connection():
+    """Probar la conexión a la base de datos"""
+    connection = conection_bd()
+    try:
+        with connection:
+            print("Conexión exitosa a la base de datos.")
+            result = connection.execute(text("SELECT * FROM products;"))
+            print(result.fetchone())
 
-def leer_consulta(nombre):
-    """Devuelve el contenido del fichero .sql que hay en sql/.
+    except Exception as e:
+        print(f"Error al conectar a la base de datos: {e}")
+        
 
-    La consulta vive en su fichero, no incrustada aquí: así la misma que
-    probasteis en Workbench es la que ejecuta el script.
+def leer_consulta():
+    connection = conection_bd()
+    
+    join_query_sql = """ 
+        SELECT
+            v.seller_id,
+            LOWER(TRIM(s.seller_city))  AS seller_city,
+            LOWER(TRIM(s.seller_state)) AS seller_state, 
+            v.product_id,
+            COALESCE(p.product_category_name, 'sin_categoria') AS product_category_name, 
+            v.unidades_vendidas
+        FROM (
+            SELECT seller_id, product_id, COUNT(*) AS unidades_vendidas
+            FROM order_items
+            GROUP BY seller_id, product_id
+        ) AS v
+        JOIN sellers  AS s ON v.seller_id  = s.seller_id
+        JOIN products AS p ON v.product_id = p.product_id;
     """
-    # TODO: leer el fichero SQL / nombre y devolver su texto
-    #       Pista: los objetos Path tienen un método read_text()
-    raise NotImplementedError("leer_consulta")
 
+    # ✅ Ejecutar y extraer los datos dentro del bloque with
+    with connection:
+        result = connection.execute(text(join_query_sql))
+        rows = result.fetchall()
+        columns = result.keys()
 
-def ejecutar(engine, consulta_sql):
+    # Ahora sí puedes construir el DataFrame
+    df = pd.DataFrame(rows, columns=columns)
+            
+    df.to_csv(
+        "data/df3_vendedores_productos.csv",
+        index=False,
+        encoding='utf-8'
+    )
+
+    print("✅ DataFrame successfully created and saved to data/df3_vendedores_productos.csv")
+    return df
+
+#def ejecutar(engine, consulta_sql):
     """Ejecuta la consulta y devuelve un DataFrame de pandas."""
     # TODO: abrir una conexión y leer el resultado en un DataFrame
     #       Pista: pandas sabe hablar con SQLAlchemy directamente
     raise NotImplementedError("ejecutar")
 
 
-def comprobar_grano(df):
+#def comprobar_grano(df):
     """Avisa si el número de filas no cuadra con el grano declarado.
 
     Si el grano es 'un pedido', entonces debe cumplirse que
@@ -78,7 +120,7 @@ def comprobar_grano(df):
     raise NotImplementedError("comprobar_grano")
 
 
-def exportar(df, nombre_csv):
+#def exportar(df, nombre_csv):
     """Guarda el DataFrame en data/ como CSV."""
     DATA.mkdir(exist_ok=True)  # por si la carpeta no existe todavía
     # TODO: exportar a DATA / nombre_csv
@@ -86,7 +128,7 @@ def exportar(df, nombre_csv):
     raise NotImplementedError("exportar")
 
 
-def main():
+#def main():
     if not GRANO or not CLAVE_DE_GRANO:
         raise SystemExit(
             "Antes de ejecutar: rellenad GRANO y CLAVE_DE_GRANO arriba.\n"
@@ -96,7 +138,7 @@ def main():
     print(f"Consulta ....... {CONSULTA}")
     print(f"Grano .......... una fila = {GRANO}")
 
-    engine = crear_engine()
+    engine = conection_bd()
     consulta_sql = leer_consulta(CONSULTA)
     df = ejecutar(engine, consulta_sql)
 
@@ -108,4 +150,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    test_connection()
+    leer_consulta()

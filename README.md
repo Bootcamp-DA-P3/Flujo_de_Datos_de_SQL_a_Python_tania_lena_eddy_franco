@@ -42,7 +42,7 @@ Para asegurar la coherencia analítica y la correcta agregación de métricas, e
 Cada registro consolidado para la toma de decisiones representa a **un comerciante único** activo en la plataforma. A este nivel se evalúan sus métricas clave: volumen agregado de unidades vendidas, amplitud de catálogo (variedad de productos únicos ofrecidos), diversificación de categorías y cuota de participación sobre el total transaccionado en el ecosistema.
 
 > **Nota sobre el dataset intermedio (`df3_vendedores_productos.csv`):**  
-> El paso previo de consolidación opera a nivel par vendedor-producto (`(seller_id, product_id)`) para capturar la dispersión del catálogo, colapsándose posteriormente sobre la clave de grano (`seller_id`) para el ranking de concentración y análisis de desempeño.
+> El paso previo de consolidación opera a nivel par vendedor-producto (`(seller_id, product_id)`) para capturar la dispersión del catálogo, colapsándose posteriormente sobre la clave de grano (`seller_id, product_id`) para el ranking de concentración y análisis de desempeño.
 
 ---
 
