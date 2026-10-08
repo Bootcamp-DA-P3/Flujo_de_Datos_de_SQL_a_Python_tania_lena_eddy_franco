@@ -1,5 +1,4 @@
--- GRANO DECLARADO: Grano: 1 fila = 1 pedido/customer_unique_id
-use olist;
+-- GRANO DECLARADO: Grano: 1 fila = 1 pedido/order_id
 WITH 
 -- 1. trampa de geolocation. Limpieza y agregación de geolocalización (Corregida con ciudad en GROUP BY)
 -- Evita que las filas se multipliquen al hacer el JOIN.

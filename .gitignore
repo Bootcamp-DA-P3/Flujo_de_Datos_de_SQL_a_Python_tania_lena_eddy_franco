@@ -225,3 +225,11 @@ output/
 
 #Imagen
 .img/
+
+# Ficheros temporales de Excel
+~$*.xlsx
+
+# Editores
+.vscode/
+.idea/
+.ipynb_checkpoints/

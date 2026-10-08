@@ -30,7 +30,7 @@ from src.config import (
 # Si la consulta devuelve mas filas que valores distintos en esa columna,
 # algun JOIN esta multiplicando y el CSV es incorrecto.
 CONSULTAS = {
-    "df1_actividad_clientes": "customer_unique_id",
+    "df1_actividad_clientes": "order_id",
     "df2_catalogo_productos": "product_id",
     "df3_vendedores": "seller_id",
 }
