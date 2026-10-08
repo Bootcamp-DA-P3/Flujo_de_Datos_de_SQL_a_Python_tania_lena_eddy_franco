@@ -6,15 +6,15 @@ WITH
 geo_clean AS (
     SELECT 
         geolocation_zip_code_prefix AS zip_code,
-        LOWER(TRIM(geolocation_city)) AS geo_city,
-        geolocation_state AS geo_state,
+ --       LOWER(TRIM(geolocation_city)) AS geo_city,
+ --       geolocation_state AS geo_state,
         AVG(geolocation_lat) AS customer_lat,
         AVG(geolocation_lng) AS customer_lng
     FROM geolocation
     GROUP BY 
-        geolocation_zip_code_prefix, 
-        LOWER(TRIM(geolocation_city)), 
-        geolocation_state
+        geolocation_zip_code_prefix
+ --      LOWER(TRIM(geolocation_city)), 
+ --      geolocation_state
 ),
 
 -- 2. Agregación de pagos por pedido. Limpia y consolida pagos.
