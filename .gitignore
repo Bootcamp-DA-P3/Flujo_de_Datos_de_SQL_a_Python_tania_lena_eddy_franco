@@ -219,3 +219,9 @@ __marimo__/
 
 #Data
 data/
+
+#Claude
+.claude/
+
+#Imagen
+.img/
