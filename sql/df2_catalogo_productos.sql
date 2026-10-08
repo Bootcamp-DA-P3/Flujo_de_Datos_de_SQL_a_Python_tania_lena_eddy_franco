@@ -1,32 +1,7 @@
 -- =============================================================================
--- CONTROL 1: Integridad referencial (order_items -> products)
--- Verificar que todo order_items.product_id tenga un producto existente en products
+-- GRANO: una fila = un producto con dimensiones validas (product_id)
 -- =============================================================================
-SELECT 
-    COUNT(oi.order_item_id) AS total_order_items,
-    COUNT(p.product_id) AS items_con_producto,
-    SUM(CASE WHEN p.product_id IS NULL THEN 1 ELSE 0 END) AS items_huerfanos
-FROM order_items oi
-LEFT JOIN products p 
-    ON oi.product_id = p.product_id;
 
--- =============================================================================
--- CONTROL 2: Productos con peso <= 0 o dimensiones nulas/inválidas
--- Identificar cuántos productos serán excluidos por esta regla de negocio
--- =============================================================================
-SELECT 
-    COUNT(*) AS total_productos_descartados,
-    SUM(CASE WHEN product_weight_g IS NULL OR product_weight_g <= 0 THEN 1 ELSE 0 END) AS peso_invalido,
-    SUM(CASE WHEN product_length_cm IS NULL OR product_length_cm <= 0 THEN 1 ELSE 0 END) AS largo_invalido,
-    SUM(CASE WHEN product_height_cm IS NULL OR product_height_cm <= 0 THEN 1 ELSE 0 END) AS alto_invalido,
-    SUM(CASE WHEN product_width_cm IS NULL OR product_width_cm <= 0 THEN 1 ELSE 0 END) AS ancho_invalido
-FROM products
-WHERE product_weight_g IS NULL OR product_weight_g <= 0
-   OR product_length_cm IS NULL OR product_length_cm <= 0
-   OR product_height_cm IS NULL OR product_height_cm <= 0
-   OR product_width_cm IS NULL OR product_width_cm <= 0;
-   
-CREATE OR REPLACE VIEW df2_catalogo_productos AS
 WITH 
 -- 1. Métricas comerciales agregadas por producto desde order_items
 metricas_ventas AS (
@@ -110,28 +85,3 @@ LEFT JOIN categoria_traduccion t
     ON pf.categoria_pt_limpia = LOWER(TRIM(t.product_category_name))
 LEFT JOIN metricas_ventas mv 
     ON pf.product_id = mv.product_id;
-    
--- Resumen por categoría: productos, precio medio, flete y ratio
-SELECT 
-    categoria_en,
-    COUNT(product_id) AS total_productos,
-    ROUND(AVG(precio_promedio), 2) AS precio_medio_cat,
-    ROUND(AVG(coste_envio_promedio), 2) AS coste_envio_medio_cat,
-    ROUND(AVG(freight_ratio), 4) AS freight_ratio_medio,
-    SUM(is_heavy) AS total_productos_pesados
-FROM df2_catalogo_productos
-GROUP BY categoria_en
-ORDER BY total_productos DESC;
-
--- Productos con mayor competencia entre vendedores
-SELECT 
-    product_id,
-    categoria_en,
-    total_vendedores_distintos,
-    precio_min,
-    precio_max,
-    ROUND(precio_max - precio_min, 2) AS dispersión_precio
-FROM df2_catalogo_productos
-WHERE total_vendedores_distintos > 1
-ORDER BY total_vendedores_distintos DESC
-LIMIT 10;
