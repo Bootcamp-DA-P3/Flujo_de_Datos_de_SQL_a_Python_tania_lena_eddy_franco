@@ -1,4 +1,4 @@
--- GRANO DECLARADO: Grano: 1 fila = 1 pedido/customer_id 
+-- GRANO DECLARADO: Grano: 1 fila = 1 pedido/customer_unique_id
 use olist;
 WITH 
 -- 1. trampa de geolocation. Limpieza y agregación de geolocalización (Corregida con ciudad en GROUP BY)
