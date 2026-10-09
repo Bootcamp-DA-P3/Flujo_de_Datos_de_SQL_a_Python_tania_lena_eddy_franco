@@ -48,11 +48,21 @@ def cuota_de_mercado(df):
     ).round(4)
     return df
 
+def tipar_hechos_ventas(df):
+    """Asegura tipos correctos en importes y fechas de la tabla de hechos."""
+    if "fecha_compra" in df.columns:
+        df["fecha_compra"] = pd.to_datetime(df["fecha_compra"], errors="coerce")
+    for col in ["precio", "flete", "importe_linea"]:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0.0)
+    return df
+
 # Reglas que se aplican a todos los datasets.
 COMUNES = [tipar_fechas]
 
 # Reglas propias de cada dataset. Aqui van las vuestras del Proyecto III.
 LIMPIEZA = {
+    "ventas_detalle": [tipar_hechos_ventas],
     "df1_actividad_clientes": [tipar_fechas],
     "df2_catalogo_productos": [],
     "df3_vendedores": [marcar_vendedores_atipicos, cuota_de_mercado],
