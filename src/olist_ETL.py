@@ -30,8 +30,11 @@ from src.config import (
 # Si la consulta devuelve mas filas que valores distintos en esa columna,
 # algun JOIN esta multiplicando y el CSV es incorrecto.
 CONSULTAS = {
+    # 1. TABLA DE HECHOS (Métricas transaccionales y centro del modelo)
+    "ventas_detalle": "linea_id",
     "df1_actividad_clientes": "order_id",
     "df2_catalogo_productos": "product_id",
+    # 2. DIMENSIONES (Describen el pedido, producto y vendedor)
     "df3_vendedores": "seller_id",
 }
 
