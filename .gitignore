@@ -233,3 +233,6 @@ output/
 .vscode/
 .idea/
 .ipynb_checkpoints/
+
+# Dashboard
+.dashboard
