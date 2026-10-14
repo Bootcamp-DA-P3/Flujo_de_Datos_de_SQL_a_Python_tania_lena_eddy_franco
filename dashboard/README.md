@@ -75,7 +75,6 @@ flowchart TB
     VEN["<b>df3_vendedores</b><br/>1 fila = 1 vendedor<br/>3.095"]
     FACT["<b>ventas_detalle</b><br/>1 fila = 1 linea de pedido<br/>110.189 filas<br/>TABLA DE HECHOS"]
 
-    ENT -->|"1 a varios<br/>order_id"| FACT
     CLI -->|"1 a varios<br/>customer_unique_id"| FACT
     PRO -->|"1 a varios<br/>product_id"| FACT
     VEN -->|"1 a varios<br/>seller_id"| FACT
