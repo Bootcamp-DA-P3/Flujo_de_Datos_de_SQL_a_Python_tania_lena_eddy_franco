@@ -1,6 +1,25 @@
 # Flujo_de_Datos_de_SQL_a_Python_tania_lena_eddy_franco
 <img width="1280" height="640" alt="Hallazgos principales Olist" src="img/image.png" />
 
+## Acceso al dashboard y a los datos
+
+> [!IMPORTANT]
+> **El dashboard final y la base de datos están alojados en Google Drive**, no en este repositorio.
+>
+> **[Abrir el dashboard de Olist en Google Drive](https://docs.google.com/spreadsheets/d/1ZI9H5SqjDb66_tCqYD9sVSaVykefd50l/edit?usp=drive_link&ouid=111558401901651871238&rtpof=true&sd=true)**
+
+**Por qué está en la nube y no en el repo**
+
+- El libro de Excel con el modelo de datos cargado pesa cerca de 100 MB, el límite por fichero de GitHub, y GitHub no permite previsualizarlo en el navegador.
+- Git no está pensado para versionar ficheros binarios pesados: cada cambio duplicaría el peso del histórico.
+- Siguiendo la práctica habitual en equipos de datos, **el repositorio guarda el código que genera los datos y los datos viven en un almacenamiento compartido**. Cualquiera puede regenerarlos ejecutando `python main.py`.
+- Alojarlo en Drive permite consultar el dashboard **sin instalar nada ni configurar MySQL**.
+
+El enlace de Drive es la versión de referencia del dashboard, con el modelo de datos, las tablas dinámicas y el dashboard terminado.
+
+> [!TIP]
+> Para ver el dashboard con todas sus funciones (segmentaciones, tablas dinámicas y modelo de datos), descargad el fichero desde Drive y abridlo con **Excel de escritorio**. La vista previa de Google Sheets puede no mostrar el modelo de datos.
+
 ## Integrantes
 - Tania
 - Lena
