@@ -19,6 +19,7 @@
 - **MySQL**: base de datos Olist y consultas de extracción
 - **Python**: Pandas, SQLAlchemy, mysql-connector-python, python-dotenv, openpyxl
 - **Excel**: Power Query, modelo de datos, tablas dinámicas y dashboard
+- **Power BI**: dashboard interactivo sobre el mismo modelo en estrella
 - **Jupyter / Google Colab**: exploración y pruebas de limpieza
 - **Git y GitHub**: control de versiones
 
@@ -26,20 +27,16 @@
 
 ## Acceso al dashboard y a los datos
 
-> [!IMPORTANT]
-> **El dashboard final y la base de datos están alojados en Google Drive.**
->
-> **[Abrir el dashboard de Olist en Google Drive](https://docs.google.com/spreadsheets/d/1ZI9H5SqjDb66_tCqYD9sVSaVykefd50l/edit?usp=drive_link&ouid=111558401901651871238&rtpof=true&sd=true)**
+Todos los entregables están en la carpeta [`dashboard/`](dashboard/) de este repositorio:
 
-**Por qué está en la nube**
-
-- El libro de Excel con el modelo de datos cargado pesa cerca de 100 MB, el límite por fichero de GitHub, y GitHub no permite previsualizarlo en el navegador.
-- Git no está pensado para versionar ficheros binarios pesados: cada cambio duplica el peso del histórico.
-- Siguiendo la práctica habitual en equipos de datos, **el repositorio guarda el código que genera los datos y los datos viven en un almacenamiento compartido**. Cualquiera puede regenerarlos ejecutando `python main.py`.
-- Alojarlo en Drive permite consultar el dashboard **sin instalar nada ni configurar MySQL**.
+| Entregable | Fichero | Cómo abrirlo |
+| :--- | :--- | :--- |
+| **Dashboard Excel** | [`dashboard/Olist_Dashboard.xlsx`](dashboard/Olist_Dashboard.xlsx) | Excel de escritorio |
+| **Dashboard Power BI** | [`dashboard/Olist_Dashboard.pbix`](dashboard/Olist_Dashboard.pbix) | Power BI Desktop |
+| **Informe ejecutivo** | [`dashboard/Informe Ejecutivo Olist.pdf`](dashboard/Informe%20Ejecutivo%20Olist.pdf) | Cualquier lector de PDF o la vista previa de GitHub |
 
 > [!TIP]
-> Para ver el dashboard con todas sus funciones (segmentaciones, tablas dinámicas y modelo de datos), descargad el fichero desde Drive y abridlo con **Excel de escritorio**. La vista previa de Google Sheets no muestra el modelo de datos.
+> GitHub no previsualiza `.xlsx` ni `.pbix`: abrid el fichero y pulsad **Download raw file** para verlo en local. El Excel pesa cerca de 100 MB porque lleva el modelo de datos cargado; para usar segmentaciones, tablas dinámicas y modelo, abridlo con **Excel de escritorio**.
 
 ---
 
@@ -104,7 +101,9 @@ flowchart TB
 │   └── exploracion.ipynb               exploración y pruebas (fuera del proceso automático)
 ├── dashboard/
 │   ├── README.md                       cómo conectar Excel a los CSV y montar el modelo
-│   └── Olist_Dashboard.xlsx            dashboard final
+│   ├── Olist_Dashboard.xlsx            dashboard final en Excel
+│   ├── Olist_Dashboard.pbix            dashboard en Power BI
+│   └── Informe Ejecutivo Olist.pdf     informe ejecutivo con hallazgos y conclusiones
 ├── output/                          <- CSV generados. NO se suben
 ├── img/                                imágenes del README
 ├── .env                             <- credenciales. NO se sube
@@ -254,6 +253,8 @@ Para añadir una consulta nueva: guardar el `.sql` en `queries/` y añadir una l
 
 ## Dashboard
 
+### Excel
+
 <img alt="Dashboard Informe Ventas Olist" src="img/dashboard.webp" />
 
 | Bloque | Qué muestra | Origen |
@@ -266,6 +267,23 @@ Para añadir una consulta nueva: guardar el `.sql` en `queries/` y añadir una l
 | **Ventas por categoría** | Ingresos de las 10 categorías principales | `ventas_detalle` + `df2_catalogo_productos` |
 | **Ventas totales** | Evolución mensual de los ingresos, oct 2016 a ago 2018 | `ventas_detalle` |
 | **Segmentaciones** | Estado del cliente y mes de compra. Filtran todas las dinámicas a la vez gracias al modelo | `df1_actividad_clientes` y `ventas_detalle` |
+
+### Power BI
+
+[`dashboard/Olist_Dashboard.pbix`](dashboard/Olist_Dashboard.pbix) monta el mismo modelo en estrella (`ventas_detalle` como tabla de hechos y las tres dimensiones) en Power BI. Abridlo con **Power BI Desktop** y pulsad `Actualizar` después de ejecutar `python main.py` para que relea los CSV de `output/`.
+
+---
+
+## Informe ejecutivo
+
+**[`dashboard/Informe Ejecutivo Olist.pdf`](dashboard/Informe%20Ejecutivo%20Olist.pdf)** resume en tres páginas los resultados del análisis para un público de negocio:
+
+1. **Volumen de negocio y crecimiento:** 15,42 M de ingresos, 96.470 pedidos, ticket medio de 159,83 y una tasa de repetición del 3 %.
+2. **Comportamiento de compra:** las cinco categorías principales concentran el 39,3 % de los ingresos.
+3. **Distribución geográfica:** SP, RJ y MG suman el 62,5 % de los ingresos; SP despacha el 64,6 % de lo vendido.
+4. **Logística y satisfacción:** el 8,1 % de los pedidos llega tarde y la nota cae de 4,29 a 2,57 con retraso. Cierra con una conclusión estratégica.
+
+Los hallazgos de la siguiente sección son la versión resumida de este informe.
 
 ---
 
@@ -296,4 +314,4 @@ Cifras calculadas sobre los CSV de `output/` (pedidos entregados).
 - **Medidas calculadas.** Ratios como ticket medio, % de retraso o flete sobre factura no se pueden definir una vez y reutilizar en todas las dinámicas; en Power BI serán medidas DAX.
 - **Tabla calendario.** Las fechas se agrupan con la jerarquía automática de Excel. Una tabla calendario propia permitiría comparar periodos (mes contra mes del año anterior).
 
-Estas limitaciones son el guion del **Proyecto V**, donde el mismo modelo se rehace en Power BI.
+Estas limitaciones son el guion del **Proyecto V**, donde el mismo modelo se rehace en Power BI. El primer paso de ese trabajo ya está en [`dashboard/Olist_Dashboard.pbix`](dashboard/Olist_Dashboard.pbix).
