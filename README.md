@@ -1,13 +1,16 @@
-# Flujo de Datos de SQL a Python: automatización MySQL a Excel con Olist
+# Flujo de Datos de SQL a Python: automatización MySQL a Excel y Power BI con Olist
 <img width="1280" height="640" alt="Hallazgos principales Olist" src="img/image.png" />
 
-**Proyecto IV** del Bootcamp de Data Analyst. Continuación del Proyecto III: allí sacamos un dataset a mano (una consulta, una ejecución, un CSV). Aquí lo convertimos en un proceso que se ejecuta solo:
+**Proyecto V** del Bootcamp de Data Analyst. Continuación del Proyecto IV, en el que automatizamos con Python la extracción de la base Olist desde MySQL y construimos un primer dashboard en Excel. En esta fase llevamos ese mismo modelo de datos a Power BI y recogemos las conclusiones del análisis en un informe ejecutivo. Ambos entregables están en la carpeta `dashboard/`.
+
+El flujo de trabajo es el siguiente:
 
 1. Python lanza las consultas de `queries/` contra la base Olist en MySQL.
 2. Comprueba que cada resultado respeta el grano declarado.
 3. Aplica las reglas de limpieza del Proyecto III.
 4. Deja un CSV por consulta en `output/`.
-5. Excel lee esos CSV con Power Query, los relaciona en un modelo de datos y alimenta el dashboard.
+5. Excel y Power BI cargan esos CSV, los relacionan en un modelo en estrella y alimentan los dashboards.
+6. Los resultados se resumen en el informe ejecutivo (`dashboard/Informe Ejecutivo Olist.pdf`).
 
 ## Integrantes
 - Tania
@@ -270,7 +273,18 @@ Para añadir una consulta nueva: guardar el `.sql` en `queries/` y añadir una l
 
 ### Power BI
 
+<img alt="Dashboard Olist en Power BI" src="img/dashboard_powerbi.webp" />
+
 [`dashboard/Olist_Dashboard.pbix`](dashboard/Olist_Dashboard.pbix) monta el mismo modelo en estrella (`ventas_detalle` como tabla de hechos y las tres dimensiones) en Power BI. Abridlo con **Power BI Desktop** y pulsad `Actualizar` después de ejecutar `python main.py` para que relea los CSV de `output/`.
+
+| Bloque | Qué muestra |
+| :--- | :--- |
+| **¿Dónde compran nuestros clientes?** | Mapa de densidad de clientes en Brasil |
+| **¿Cómo se distribuyen las ventas?** | Árbol de descomposición de las ventas (15,42 M) por estado: SP 5,77 M, RJ 2,06 M y MG 1,82 M |
+| **Categoría de producto** | Ventas por categoría, encabezadas por Salud y belleza (1,4 M) |
+| **Total de pagos 2018 frente a 2016** | 8,45 M en 2018 frente a 1,53 M en 2016 |
+| **Valoración media, pedidos y % de retrasos** | Medidores: nota 4,16 sobre 5, 96.470 pedidos y 8,11 % de retrasos |
+| **Preguntas estratégicas** | Guía de lectura: dónde coinciden más retrasos y peores valoraciones, sin asumir relación causal |
 
 ---
 
@@ -314,4 +328,4 @@ Cifras calculadas sobre los CSV de `output/` (pedidos entregados).
 - **Medidas calculadas.** Ratios como ticket medio, % de retraso o flete sobre factura no se pueden definir una vez y reutilizar en todas las dinámicas; en Power BI serán medidas DAX.
 - **Tabla calendario.** Las fechas se agrupan con la jerarquía automática de Excel. Una tabla calendario propia permitiría comparar periodos (mes contra mes del año anterior).
 
-Estas limitaciones son el guion del **Proyecto V**, donde el mismo modelo se rehace en Power BI. El primer paso de ese trabajo ya está en [`dashboard/Olist_Dashboard.pbix`](dashboard/Olist_Dashboard.pbix).
+Estas limitaciones, detectadas al montar el dashboard en Excel, son las que motivaron el paso a Power BI en el Proyecto V ([`dashboard/Olist_Dashboard.pbix`](dashboard/Olist_Dashboard.pbix)).
