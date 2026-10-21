@@ -54,6 +54,8 @@ flowchart TB
     LIMP["src/limpieza.py<br/>reglas traídas del P3"]
     CSV[("output/*.csv<br/>3 dimensiones + 1 tabla de hechos")]
     XLS["dashboard/Olist_Dashboard.xlsx"]
+    PBI["dashboard/Olist_Dashboard.pbix"]
+    INF["dashboard/Informe Ejecutivo Olist.pdf"]
     STOP(["ETL detenido<br/>no se escribe el CSV"])
 
     MAIN ==> E1
@@ -75,13 +77,17 @@ flowchart TB
     E4 -.->|no cuadra| STOP
     E5 ==> CSV
     CSV ==>|"Power Query · Actualizar todo"| XLS
+    CSV ==>|"Power BI Desktop · Actualizar"| PBI
     MAIN -. "al terminar" .-> XLSPY["src/excel.py<br/>crea el libro si no existe y lo abre"] --> XLS
+    XLS -. hallazgos .-> INF
+    PBI -. hallazgos .-> INF
 ```
 
 - **`main.py`** llama a `ejecutar_etl()` y, al terminar, a `src/excel.py`.
 - **`src/olist_ETL.py`** recorre las consultas siempre en el mismo orden: extraer, comprobar grano, limpiar, comprobar grano, exportar.
 - **Los dos controles de grano** detienen el proceso si una consulta devuelve más filas que valores distintos en su clave: un JOIN que multiplica filas no llega nunca al dashboard.
 - **`src/excel.py`** no diseña nada: crea el libro con una hoja *Fuentes* solo si no existe y lo abre. Nunca pisa el dashboard.
+- **Power BI** lee los mismos CSV de `output/` con el mismo modelo en estrella. Las conclusiones de ambos dashboards se recogen en el informe ejecutivo.
 
 ---
 
